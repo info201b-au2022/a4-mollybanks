@@ -1,4 +1,6 @@
 library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
 # The functions might be useful for A4
 source("../source/a4-helpers.R")
@@ -26,19 +28,33 @@ test_query2 <- function(num=6) {
 ## Section 3  ---- 
 #----------------------------------------------------------------------------#
 # Growth of the U.S. Prison Population
-# Your functions might go here ... <todo:  update comment>
+
 #----------------------------------------------------------------------------#
-# This function ... <todo:  update comment>
+# Function returns relevant data frame
+
 get_year_jail_pop <- function() {
-  # TODO: Implement this function 
-return()   
+  total_pop_df <- incarceration.data %>%
+    select(year, total_jail_pop)
+return(total_pop_df)   
 }
 
 # This function ... <todo:  update comment>
 plot_jail_pop_for_us <- function()  {
-  # TODO: Implement this function 
-  return()   
+  total_pop_df <- get_year_jail_pop()
+  jail_pop_plot <- ggplot(data = total_pop_df) +
+   geom_col(mapping = aes(x = year, y = total_jail_pop)) +
+    labs(title = "Increase of Jail Population in U.S. (1970-2018)") +
+    xlab(label = "Year") +
+    scale_y_continuous(name = "Total Jail Population",
+                       labels = c("0", "200,000", "400,000", "600,000", "800,000")
+                       )
+
+  return(jail_pop_plot)   
 } 
+
+# labels = c("0", "200,000", "400,000", "600,000", "800,000") scale_y_continuous( name = "Total Jail Population",
+# labels = c("200,000","400,000", "600,000", "800,000")) +
+
 
 ## Section 4  ---- 
 #----------------------------------------------------------------------------#
@@ -62,5 +78,6 @@ plot_jail_pop_for_us <- function()  {
 #----------------------------------------------------------------------------#
 
 ## Load data frame ---- 
+incarceration.data <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv", stringsAsFactors = FALSE)
 
 
