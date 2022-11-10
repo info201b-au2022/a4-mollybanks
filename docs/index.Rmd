@@ -41,11 +41,14 @@ print(sum)
 
 ## Section 3: Growth of the U.S. Prison Population
 
-```{r education, echo=FALSE, message=FALSE, warning=FALSE}
+```{r prison, echo=FALSE, message=FALSE, warning=FALSE}
 plot_jail_pop_for_us()
 ```
 
-
+## Section 4: Growth of Prison Population by State
+```{r state, echo=FALSE, message=FALSE, warning=FALSE}
+plot_jail_pop_by_states(c("NY", "CA", "FL", "TX"))
+```
 
 [TODO ... other sections ... See Canvas for details]
 
