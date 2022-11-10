@@ -30,7 +30,7 @@ test_query2 <- function(num=6) {
 # Growth of the U.S. Prison Population
 
 #----------------------------------------------------------------------------#
-# Function returns relevant data frame
+# This function returns relevant data frame
 
 get_year_jail_pop <- function() {
   total_pop_df <- incarceration.data %>%
@@ -38,7 +38,7 @@ get_year_jail_pop <- function() {
 return(total_pop_df)   
 }
 
-# This function ... <todo:  update comment>
+# This function renders Jail Population Increase bar chart to match figure 1
 plot_jail_pop_for_us <- function()  {
   total_pop_df <- get_year_jail_pop()
   jail_pop_plot <- ggplot(data = total_pop_df) +
@@ -51,9 +51,6 @@ plot_jail_pop_for_us <- function()  {
 
   return(jail_pop_plot)   
 } 
-
-# labels = c("0", "200,000", "400,000", "600,000", "800,000") scale_y_continuous( name = "Total Jail Population",
-# labels = c("200,000","400,000", "600,000", "800,000")) +
 
 
 ## Section 4  ---- 

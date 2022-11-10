@@ -39,6 +39,12 @@ print(sum)
 ## Data Summary 
 [TODO]
 
+## Section 3: Growth of the U.S. Prison Population
+
+```{r education, echo=FALSE, message=FALSE, warning=FALSE}
+plot_jail_pop_for_us()
+```
+
 [TODO ... other sections ... See Canvas for details]
 
 _All the very best with your work!_
