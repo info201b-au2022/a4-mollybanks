@@ -11,70 +11,89 @@ source("../source/a4-helpers.R")
 #----------------------------------------------------------------------------#
 # Return a simple string
 test_query1 <- function() {
-  return ("Hello world")
+  return("Hello world")
 }
 
 # Return a vector of numbers
-test_query2 <- function(num=6) {
+test_query2 <- function(num = 6) {
   v <- seq(1:num)
   return(v)
 }
 
-## Section 2  ---- 
+## Section 2  ----
 #----------------------------------------------------------------------------#
 # Your functions and variables might go here ... <todo: update comment>
 #----------------------------------------------------------------------------#
 
-## Section 3  ---- 
+## Section 3  ----
 #----------------------------------------------------------------------------#
 # Growth of the U.S. Prison Population
 
-#----------------------------------------------------------------------------#
+
 # This function returns relevant data frame
 
 get_year_jail_pop <- function() {
   total_pop_df <- incarceration.data %>%
     select(year, total_jail_pop)
-return(total_pop_df)   
+  return(total_pop_df)
 }
 
 # This function renders Jail Population Increase bar chart to match figure 1
-plot_jail_pop_for_us <- function()  {
+plot_jail_pop_for_us <- function() {
   total_pop_df <- get_year_jail_pop()
   jail_pop_plot <- ggplot(data = total_pop_df) +
-   geom_col(mapping = aes(x = year, y = total_jail_pop)) +
+    geom_col(mapping = aes(x = year, y = total_jail_pop)) +
     labs(title = "Increase of Jail Population in U.S. (1970-2018)") +
     xlab(label = "Year") +
-    scale_y_continuous(name = "Total Jail Population",
-                       labels = c("0", "200,000", "400,000", "600,000", "800,000")
-                       )
+    scale_y_continuous(
+      name = "Total Jail Population",
+      labels = c("0", "200,000", "400,000", "600,000", "800,000")
+    )
+  return(jail_pop_plot)
+}
 
-  return(jail_pop_plot)   
-} 
-
-
-## Section 4  ---- 
-#----------------------------------------------------------------------------#
-# Growth of Prison Population by State 
-# Your functions might go here ... <todo:  update comment>
-# See Canvas
 #----------------------------------------------------------------------------#
 
-## Section 5  ---- 
+
+## Section 4  ----
+#----------------------------------------------------------------------------#
+# Growth of Prison Population by State
+
+# This function returns data frame with relevant values
+get_jail_pop_by_states <- function(states) {
+  state_df_render <- incarceration.data %>%
+    select(state, year, total_jail_pop)
+  return(state_df_render)
+}
+# This function plots jail pop by state
+plot_jail_pop_by_states <- function(states) {
+  state_df_render <- get_jail_pop_by_states() %>%
+    filter(state == states, na.rm = TRUE)
+  state_jail_pop_plot <- ggplot(data = state_df_render) +
+    geom_smooth(mapping = aes(x = year, y = total_jail_pop, color = state), se = FALSE) +
+    labs(title = "Increase of Jail Population by State (1970-2018)",
+         x = "Year",
+         y = "Total Jail Population",
+         color = "State") + 
+    scale_color_brewer(palette = "RdBu")
+  return(state_jail_pop_plot)
+  
+}
+#----------------------------------------------------------------------------#
+
+## Section 5  ----
 #----------------------------------------------------------------------------#
 # <variable comparison that reveals potential patterns of inequality>
 # Your functions might go here ... <todo:  update comment>
 # See Canvas
 #----------------------------------------------------------------------------#
 
-## Section 6  ---- 
+## Section 6  ----
 #----------------------------------------------------------------------------#
 # <a map shows potential patterns of inequality that vary geographically>
 # Your functions might go here ... <todo:  update comment>
 # See Canvas
 #----------------------------------------------------------------------------#
 
-## Load data frame ---- 
+## Load data frame ----
 incarceration.data <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv", stringsAsFactors = FALSE)
-
-
