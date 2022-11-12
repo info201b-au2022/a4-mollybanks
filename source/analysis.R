@@ -1,6 +1,7 @@
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(tidyr)
 
 # The functions might be useful for A4
 source("../source/a4-helpers.R")
@@ -75,16 +76,40 @@ plot_jail_pop_by_states <- function(states) {
          x = "Year",
          y = "Total Jail Population",
          color = "State") + 
-    scale_color_brewer(palette = "RdBu")
+    scale_color_brewer(palette = "BrBG")
   return(state_jail_pop_plot)
   
 }
+
+
 #----------------------------------------------------------------------------#
 
 ## Section 5  ----
 #----------------------------------------------------------------------------#
 # <variable comparison that reveals potential patterns of inequality>
 # Your functions might go here ... <todo:  update comment>
+#  female_15to64_prop = female_prison_pop/female_pop_15to64,
+# male_15to64_prop = male_prison_pop/male_pop_15to64,
+inequality_df <- function(states) {
+  inequality_df <- incarceration.data %>%
+    filter(year == "2010", na.rm = TRUE) %>%
+    select(black_jail_pop, latinx_jail_pop,  aapi_jail_pop, white_jail_pop, native_jail_pop, other_race_jail_pop, urbanicity) %>%
+    gather(key = category_race,
+           value = jail_prop,
+           -urbanicity
+           ) %>%
+    group_by(category_race) %>%
+    mutate(perc = jail_prop / sum(jail_prop, na.rm = TRUE)) %>% 
+  return(inequality_df)
+}
+
+inequality_plot <- function() {
+  inequality_df <- inequality_df()
+  ineq_plot <- ggplot(data = inequality_df) +
+    geom_col(mapping = aes(x = urbanicity, y = perc, fill = category_race), position = "stack") 
+  return(ineq_plot)
+}
+
 # See Canvas
 #----------------------------------------------------------------------------#
 
@@ -92,6 +117,7 @@ plot_jail_pop_by_states <- function(states) {
 #----------------------------------------------------------------------------#
 # <a map shows potential patterns of inequality that vary geographically>
 # Your functions might go here ... <todo:  update comment>
+state_shape <- map_data("state")
 # See Canvas
 #----------------------------------------------------------------------------#
 
