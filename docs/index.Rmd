@@ -32,6 +32,7 @@ Summary Paragraph
 plot_jail_pop_by_states(c("WA", "NE", "AL", "NJ"))
 ```
 summary Paragraph 
+- selected one state from each region specified in the Vera institute data set
 
 ## Section 5: Pretrial Jailing Rate Inequality by Urbanicity
 ```{r pretrial, echo=FALSE, message=FALSE, warning=FALSE}
