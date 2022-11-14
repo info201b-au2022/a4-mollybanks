@@ -3,9 +3,8 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 
-# The functions might be useful for A4
-source("../source/a4-helpers.R")
-
+## Load data frame ----
+incarceration.data <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv", stringsAsFactors = FALSE)
 
 ## Section 2  ----
 #----------------------------------------------------------------------------#
@@ -78,9 +77,7 @@ plot_jail_pop_by_states <- function(states) {
 # male_15to64_prop = male_prison_pop/male_pop_15to64,
 inequality_df <- function(states) {
   inequality_df <- incarceration.data %>%
-    mutate(new_pop = total_jail_pop - lag(total_jail_pop),
-           new_pretrial_pop = total_jail_pretrial - lag(total_jail_pretrial)) %>%
-    select(urbanicity, year, total_jail_pop, new_pop, total_jail_pretrial, total_jail_pretrial_rate, new_pretrial_pop)
+    select(urbanicity, year, total_jail_pretrial, total_jail_pretrial_rate)
   return(inequality_df)
 }
 
@@ -88,7 +85,7 @@ inequality_df <- function(states) {
 inequality_plot <- function() {
   inequality_df <- inequality_df()
   ineq_plot <- ggplot(data = inequality_df) +
-    geom_smooth(mapping = aes(x = year, y = total_jail_pretrial_rate, color = urbanicity)) + 
+    geom_smooth(mapping = aes(x = year, y = total_jail_pretrial_rate, color = urbanicity), se = FALSE) + 
     labs(title = "Pretrial Jailing Rates by Urbanicity (1970-2018)",
          x = "Year",
          y = "Jail Pretrial Rate",
@@ -104,9 +101,59 @@ inequality_plot <- function() {
 #----------------------------------------------------------------------------#
 # <a map shows potential patterns of inequality that vary geographically>
 # Your functions might go here ... <todo:  update comment>
-state_shape <- map_data("state")
+
+state_pretrial_ineq_df <- function() {
+  
+  state_abv <- read.csv(
+  file = "/Users/mollybanks/Documents/info201/assignments/a4-mollybanks/source/state_names_and_codes.csv",
+  stringsAsFactors = FALSE)
+  
+  jail_state_ineq_df <- incarceration.data %>%
+    filter(year == 2018) %>% 
+    select(state, total_jail_pretrial_rate)
+  
+  ineq_by_state <- state_abv %>%
+    select(State, Code) %>%
+    rename(region = State,
+           state = Code) %>%
+    left_join(jail_state_ineq_df, by="state") %>%
+    mutate(region = tolower(region)) %>%
+    select(region, total_jail_pretrial_rate)
+  
+  state_ineq_df <- map_data("state") %>% 
+    left_join(ineq_by_state, by ="region") 
+  
+  return(state_ineq_df)
+  
+}
+
+plot_state_ineq <- function() {
+  blank_theme <- theme_bw() +
+    theme(
+      axis.line = element_blank(),        
+      axis.text = element_blank(),       
+      axis.ticks = element_blank(),       
+      axis.title = element_blank(),      
+      plot.background = element_blank(),  
+      panel.grid.major = element_blank(), 
+      panel.grid.minor = element_blank(), 
+      panel.border = element_blank()     
+    )
+  state_ineq_df <- state_pretrial_ineq_df()
+  
+  ggplot(state_ineq_df) +
+    geom_polygon(
+      mapping = aes(x = long, y = lat, group = group, fill = total_jail_pretrial_rate),
+      color = "white", 
+      size = .1        
+    ) +
+    coord_map() + 
+    scale_fill_continuous(type = "gradient") +
+    labs(fill = "Pretrial Jail Rate") +
+    blank_theme
+}
+
+
 # See Canvas
 #----------------------------------------------------------------------------#
 
-## Load data frame ----
-incarceration.data <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv", stringsAsFactors = FALSE)
