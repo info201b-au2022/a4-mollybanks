@@ -33,4 +33,10 @@ plot_jail_pop_by_states(c("AZ", "CA", "FL", "TN"))
 ```
 summary Paragraph 
 
+## Section 5: Pretrial Jailing Rate Inequality by Urbanicity
+```{r state, echo=FALSE, message=FALSE, warning=FALSE}
+inequality_plot()
+```
+summary Paragraph 
+
 

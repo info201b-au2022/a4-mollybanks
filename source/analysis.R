@@ -6,20 +6,6 @@ library(tidyr)
 # The functions might be useful for A4
 source("../source/a4-helpers.R")
 
-## Test queries ----
-#----------------------------------------------------------------------------#
-# Simple queries for basic testing
-#----------------------------------------------------------------------------#
-# Return a simple string
-test_query1 <- function() {
-  return("Hello world")
-}
-
-# Return a vector of numbers
-test_query2 <- function(num = 6) {
-  v <- seq(1:num)
-  return(v)
-}
 
 ## Section 2  ----
 #----------------------------------------------------------------------------#
@@ -92,21 +78,22 @@ plot_jail_pop_by_states <- function(states) {
 # male_15to64_prop = male_prison_pop/male_pop_15to64,
 inequality_df <- function(states) {
   inequality_df <- incarceration.data %>%
-    filter(year == "2010", na.rm = TRUE) %>%
-    select(black_jail_pop, latinx_jail_pop,  aapi_jail_pop, white_jail_pop, native_jail_pop, other_race_jail_pop, urbanicity) %>%
-    gather(key = category_race,
-           value = jail_prop,
-           -urbanicity
-           ) %>%
-    group_by(category_race) %>%
-    mutate(perc = jail_prop / sum(jail_prop, na.rm = TRUE)) %>% 
+    mutate(new_pop = total_jail_pop - lag(total_jail_pop),
+           new_pretrial_pop = total_jail_pretrial - lag(total_jail_pretrial)) %>%
+    select(urbanicity, year, total_jail_pop, new_pop, total_jail_pretrial, total_jail_pretrial_rate, new_pretrial_pop)
   return(inequality_df)
 }
+
 
 inequality_plot <- function() {
   inequality_df <- inequality_df()
   ineq_plot <- ggplot(data = inequality_df) +
-    geom_col(mapping = aes(x = urbanicity, y = perc, fill = category_race), position = "stack") 
+    geom_smooth(mapping = aes(x = year, y = total_jail_pretrial_rate, color = urbanicity)) + 
+    labs(title = "Pretrial Jailing Rates by Urbanicity (1970-2018)",
+         x = "Year",
+         y = "Jail Pretrial Rate",
+         color = "Urbanicity") + 
+    scale_color_brewer(palette = "BrBG")
   return(ineq_plot)
 }
 
