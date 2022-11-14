@@ -4,8 +4,9 @@ library(ggplot2)
 library(tidyr)
 
 ## Load data frame ----
-incarceration.data <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv", 
-                               stringsAsFactors = FALSE)
+incarceration.data <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv",
+  stringsAsFactors = FALSE
+)
 
 ## Section 2  ----
 #----------------------------------------------------------------------------#
@@ -57,11 +58,14 @@ plot_jail_pop_by_states <- function(states) {
   state_df_render <- get_jail_pop_by_states() %>% # calls relevant data frame
     filter(state == states, na.rm = TRUE) # filters data frame for state matches
   state_jail_pop_plot <- ggplot(data = state_df_render) +
-    geom_smooth(mapping = aes(
-      x = year, 
-      y = total_jail_pop, 
-      color = state), 
-      se = FALSE) +
+    geom_smooth(
+      mapping = aes(
+        x = year,
+        y = total_jail_pop,
+        color = state
+      ),
+      se = FALSE
+    ) +
     labs(
       title = "Increase of Jail Population by State (1970-2018)",
       x = "Year",
@@ -102,7 +106,7 @@ inequality_plot <- function() {
 ## Section 6  ----
 #----------------------------------------------------------------------------#
 # this function returns relevant data frame for map
-state_pretrial_ineq_df <- function() {
+state_pretrial_ineq_df <- function(year) {
 
   # loads dataframe from CSV with state names
   state_abv <- read.csv(
@@ -112,8 +116,9 @@ state_pretrial_ineq_df <- function() {
 
   # returns relevant columns and features for dataframe
   jail_state_ineq_df <- incarceration.data %>%
-    filter(year == 2015) %>% # filter for 2015 only
-    select(state, total_jail_pretrial_rate) # selects relevant features
+    filter(year == year) %>% # filter for year imput
+    mutate(prison_prop = total_prison_pop/total_pop) %>%
+    select(state, prison_prop) 
 
   # joins state code data frame with incarceration df to add full state name
   ineq_by_state <- state_abv %>%
@@ -124,7 +129,7 @@ state_pretrial_ineq_df <- function() {
     ) %>% # renaming state row to join
     left_join(jail_state_ineq_df, by = "state") %>% # join data frame by state
     mutate(region = tolower(region)) %>% # remove caps in state name
-    select(region, total_jail_pretrial_rate) # selects relevant features
+    select(region, prison_prop) # selects relevant features
 
   # joins map data with relevant incarceration data frame from above
   state_ineq_df <- map_data("state") %>%
@@ -135,7 +140,7 @@ state_pretrial_ineq_df <- function() {
 
 # returns heatmap of states based on their pretrial jailing rates
 
-plot_state_ineq <- function() {
+plot_state_ineq <- function(year) {
   blank_theme <- theme_bw() + # creates minimalist map theme
     theme(
       axis.line = element_blank(),
@@ -148,21 +153,22 @@ plot_state_ineq <- function() {
       panel.border = element_blank()
     )
 
-  state_ineq_df <- state_pretrial_ineq_df() # calls relevant data frame
+  state_ineq_df <- state_pretrial_ineq_df(year) # calls relevant data frame
 
   ggplot(state_ineq_df) +
     geom_polygon(
-      mapping = aes(x = long, 
-                    y = lat, 
-                    group = group, 
-                    fill = total_jail_pretrial_rate),
+      mapping = aes(
+        x = long,
+        y = lat,
+        group = group,
+        fill = prison_prop
+      ),
       color = "white",
       size = .1
     ) +
     coord_map() +
     scale_fill_continuous(low = "#132B43", high = "Red") + # aesthetic changes
-    labs(fill = "Pretrial Jail Rate") +
+    labs(fill = "Prison Admit Rate") +
     blank_theme
 }
-
 #----------------------------------------------------------------------------#
