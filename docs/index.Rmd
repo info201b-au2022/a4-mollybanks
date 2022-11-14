@@ -29,13 +29,19 @@ Summary Paragraph
 
 ## Section 4: Growth of Prison Population by State
 ```{r state, echo=FALSE, message=FALSE, warning=FALSE}
-plot_jail_pop_by_states(c("AZ", "CA", "FL", "TN"))
+plot_jail_pop_by_states(c("WA", "NE", "AL", "NJ"))
 ```
 summary Paragraph 
 
 ## Section 5: Pretrial Jailing Rate Inequality by Urbanicity
 ```{r pretrial, echo=FALSE, message=FALSE, warning=FALSE}
 inequality_plot()
+```
+summary Paragraph 
+
+## Section 6: Pretrial Jailing Rate Inequality by State
+```{r map, echo=FALSE, message=FALSE, warning=FALSE}
+plot_state_ineq()
 ```
 summary Paragraph 
 

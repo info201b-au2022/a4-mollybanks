@@ -61,7 +61,7 @@ plot_jail_pop_by_states <- function(states) {
          x = "Year",
          y = "Total Jail Population",
          color = "State") + 
-    scale_color_brewer(palette = "BrBG")
+    scale_color_brewer(palette = "PuOr")
   return(state_jail_pop_plot)
   
 }
@@ -109,7 +109,7 @@ state_pretrial_ineq_df <- function() {
   stringsAsFactors = FALSE)
   
   jail_state_ineq_df <- incarceration.data %>%
-    filter(year == 2018) %>% 
+    filter(year == 2015) %>% 
     select(state, total_jail_pretrial_rate)
   
   ineq_by_state <- state_abv %>%
@@ -139,6 +139,7 @@ plot_state_ineq <- function() {
       panel.grid.minor = element_blank(), 
       panel.border = element_blank()     
     )
+  
   state_ineq_df <- state_pretrial_ineq_df()
   
   ggplot(state_ineq_df) +
@@ -148,7 +149,7 @@ plot_state_ineq <- function() {
       size = .1        
     ) +
     coord_map() + 
-    scale_fill_continuous(type = "gradient") +
+    scale_fill_continuous(low = "#132B43", high = "Red") +
     labs(fill = "Pretrial Jail Rate") +
     blank_theme
 }
