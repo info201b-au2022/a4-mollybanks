@@ -12,14 +12,27 @@ incarceration.data <- read.csv("https://raw.githubusercontent.com/vera-institute
 
 ## Section 2  ----
 #----------------------------------------------------------------------------#
-# Your functions and variables might go here ... <todo: update comment>
+county_max_pretrial_rate <- incarceration.data %>%
+  filter(total_jail_pretrial_rate == max(total_jail_pretrial_rate, na.rm = TRUE)) %>%
+  pull(county_name)
+
+year_max_pretrial_rate <- incarceration.data %>%
+  filter(total_jail_pretrial_rate == max(total_jail_pretrial_rate, na.rm = TRUE)) %>%
+  pull(year)
+
+year_max_ice_jail <- incarceration.data %>%
+  filter(total_jail_from_ice == max(total_jail_from_ice, na.rm = TRUE)) %>%
+  pull(year)
+
+county_max_ice_jail <- incarceration.data %>%
+  filter(total_jail_from_ice == max(total_jail_from_ice, na.rm = TRUE)) %>%
+  pull(county_name)
+  
 #----------------------------------------------------------------------------#
 
 ## Section 3  ----
 #----------------------------------------------------------------------------#
 # Growth of the U.S. Prison Population
-
-
 # This function returns relevant data frame
 
 get_year_jail_pop <- function() {
@@ -83,12 +96,14 @@ plot_jail_pop_by_states <- function(states) {
 
 ## Section 5  ----
 #----------------------------------------------------------------------------#
+# this function returns relevant data frame
 inequality_df <- function(states) {
   inequality_df <- incarceration.data %>%
     select(urbanicity, year, total_jail_pretrial, total_jail_pretrial_rate)
   return(inequality_df)
 }
 
+# renders line graph of pretrial jailing by state
 inequality_plot <- function() {
   inequality_df <- inequality_df() # calls relevant data frame
   ineq_plot <- ggplot(data = inequality_df) +
@@ -108,8 +123,6 @@ inequality_plot <- function() {
 ## Section 6  ----
 #----------------------------------------------------------------------------#
 # this function returns relevant data frame for map
-
-
 county_ineq_df <- function(states, years) {
 
     # returns relevant columns and features for dataframe
@@ -137,8 +150,8 @@ county_ineq_df <- function(states, years) {
     
   return(county_ineq_df)
 }
-# returns heatmap of states based on their pretrial jailing rates
 
+# returns heatmap of states based on their pretrial jailing rates
 plot_county_ineq <- function(states, years) {
 
   county_ineq_df <- county_ineq_df(states, years) # calls relevant data frame
@@ -168,8 +181,8 @@ plot_county_ineq <- function(states, years) {
     ) +
     coord_map() +
     scale_fill_continuous(low = "#132B43", high = "Red") +  # aesthetic changes
-    labs(title = "Legally Innocent Jailing Rate by County",
-         subtitle = paste0("Rate of Pretrial Jailing for", states, " in ", years), 
+    labs(title = paste0("Legally Innocent Jailing Rate by County ", "(", states, ")"),
+         subtitle = paste0("Rate of Pretrial Jailing", " in ", years), 
          fill = "Jail Pretrial Rate") +
     blank_theme
     

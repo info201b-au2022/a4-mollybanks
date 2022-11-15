@@ -24,6 +24,7 @@ source("../source/analysis.R")
 ```{r prison, echo=FALSE, message=FALSE, warning=FALSE}
 plot_jail_pop_for_us()
 ```
+
 Summary Paragraph 
 
 
@@ -31,6 +32,7 @@ Summary Paragraph
 ```{r state, echo=FALSE, message=FALSE, warning=FALSE}
 plot_jail_pop_by_states(c("WA", "NE", "AL", "NJ"))
 ```
+
 summary Paragraph 
 - selected one state from each region specified in the Vera institute data set
 
@@ -38,12 +40,14 @@ summary Paragraph
 ```{r pretrial, echo=FALSE, message=FALSE, warning=FALSE}
 inequality_plot()
 ```
+
 summary Paragraph 
 
 ## Section 6: Pretrial Jailing Rate Inequality by State
 ```{r map, echo=FALSE, message=FALSE, warning=FALSE}
 plot_county_ineq("WA", "2010")
 ```
+
 summary Paragraph 
 
 
