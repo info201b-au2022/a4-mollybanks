@@ -2,6 +2,8 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(usmap)
+
 
 ## Load data frame ----
 incarceration.data <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv",
@@ -106,41 +108,38 @@ inequality_plot <- function() {
 ## Section 6  ----
 #----------------------------------------------------------------------------#
 # this function returns relevant data frame for map
-state_pretrial_ineq_df <- function(year) {
+
 
   # loads dataframe from CSV with state names
   state_abv <- read.csv(
     file = "/Users/mollybanks/Documents/info201/assignments/a4-mollybanks/source/state_names_and_codes.csv",
-    stringsAsFactors = FALSE
-  )
+    stringsAsFactors = FALSE)
 
-  # returns relevant columns and features for dataframe
+
+
+county_ineq_df <- function(years) {
+  
+    # returns relevant columns and features for dataframe
   jail_state_ineq_df <- incarceration.data %>%
-    filter(year == year) %>% # filter for year imput
-    mutate(prison_prop = total_prison_pop/total_pop) %>%
-    select(state, prison_prop) 
-
-  # joins state code data frame with incarceration df to add full state name
-  ineq_by_state <- state_abv %>%
-    select(State, Code) %>%
-    rename(
-      region = State,
-      state = Code
-    ) %>% # renaming state row to join
-    left_join(jail_state_ineq_df, by = "state") %>% # join data frame by state
-    mutate(region = tolower(region)) %>% # remove caps in state name
-    select(region, prison_prop) # selects relevant features
+    filter(year == years, # filter for year imput
+           state == "WA") %>% # filter for state imput
+    mutate(subregion = tolower(str_replace(county_name," County", ""))) %>%
+    select(total_jail_pretrial_rate, subregion) 
+  
 
   # joins map data with relevant incarceration data frame from above
-  state_ineq_df <- map_data("state") %>%
-    left_join(ineq_by_state, by = "region") # joins by region (state)
-
+  state_ineq_df <- map_data("county") %>%
+    filter(region == "washington") %>%
+    left_join(jail_state_ineq_df, by = "subregion") # joins by county
+    
   return(state_ineq_df)
 }
-
 # returns heatmap of states based on their pretrial jailing rates
 
-plot_state_ineq <- function(year) {
+plot_county_ineq <- function(years) {
+
+  county_ineq_df <- county_ineq_df(years) # calls relevant data frame
+  
   blank_theme <- theme_bw() + # creates minimalist map theme
     theme(
       axis.line = element_blank(),
@@ -152,23 +151,24 @@ plot_state_ineq <- function(year) {
       panel.grid.minor = element_blank(),
       panel.border = element_blank()
     )
-
-  state_ineq_df <- state_pretrial_ineq_df(year) # calls relevant data frame
-
+  
   ggplot(state_ineq_df) +
     geom_polygon(
       mapping = aes(
         x = long,
         y = lat,
         group = group,
-        fill = prison_prop
+        fill = total_jail_pretrial_rate
       ),
       color = "white",
       size = .1
     ) +
     coord_map() +
     scale_fill_continuous(low = "#132B43", high = "Red") + # aesthetic changes
-    labs(fill = "Prison Admit Rate") +
     blank_theme
 }
+
+
+
 #----------------------------------------------------------------------------#
+

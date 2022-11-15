@@ -1,6 +1,9 @@
 library(tidyverse)
 
 # Data access ----
+incarceration_df <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv",
+                               stringsAsFactors = FALSE
+)
 #---------------------------------------------------------------------------#
 # This function returns the incarceration data as a dataframe
 # Note: The CSV file is stored on my local machine to speed load times

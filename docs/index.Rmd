@@ -42,7 +42,7 @@ summary Paragraph
 
 ## Section 6: Pretrial Jailing Rate Inequality by State
 ```{r map, echo=FALSE, message=FALSE, warning=FALSE}
-plot_state_ineq("2010")
+plot_county_ineq("WA", "2010")
 ```
 summary Paragraph 
 
