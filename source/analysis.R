@@ -161,13 +161,16 @@ plot_county_ineq <- function(states, years) {
         x = long,
         y = lat,
         group = group,
-        fill = total_jail_pretrial_rate
+        fill = total_jail_pretrial_rate,
       ),
       color = "white",
       size = .1
     ) +
     coord_map() +
     scale_fill_continuous(low = "#132B43", high = "Red") +  # aesthetic changes
+    labs(title = "Legally Innocent Jailing Rate by County",
+         subtitle = paste0("Rate of Pretrial Jailing for", states, " in ", years), 
+         fill = "Jail Pretrial Rate") +
     blank_theme
     
   }
