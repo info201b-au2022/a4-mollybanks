@@ -110,35 +110,38 @@ inequality_plot <- function() {
 # this function returns relevant data frame for map
 
 
+county_ineq_df <- function(states, years) {
+
+    # returns relevant columns and features for dataframe
+  jail_county_ineq_df <- incarceration.data %>%
+    filter(year == years, # filter for year imput
+           state == states) %>% # filter for state imput
+    mutate(subregion = tolower(str_replace(county_name," County", ""))) %>%
+    select(total_jail_pretrial_rate, subregion) 
+  
   # loads dataframe from CSV with state names
   state_abv <- read.csv(
     file = "/Users/mollybanks/Documents/info201/assignments/a4-mollybanks/source/state_names_and_codes.csv",
     stringsAsFactors = FALSE)
-
-
-
-county_ineq_df <- function(years) {
   
-    # returns relevant columns and features for dataframe
-  jail_state_ineq_df <- incarceration.data %>%
-    filter(year == years, # filter for year imput
-           state == "WA") %>% # filter for state imput
-    mutate(subregion = tolower(str_replace(county_name," County", ""))) %>%
-    select(total_jail_pretrial_rate, subregion) 
+  state_name <- state_abv %>%
+    filter(Code == states) %>%
+    summarise(state = tolower(State)) %>%
+    pull(state)
   
 
   # joins map data with relevant incarceration data frame from above
-  state_ineq_df <- map_data("county") %>%
-    filter(region == "washington") %>%
-    left_join(jail_state_ineq_df, by = "subregion") # joins by county
+  county_ineq_df <- map_data("county") %>%
+    filter(region == state_name) %>%
+    left_join(jail_county_ineq_df, by = "subregion") # joins by county
     
-  return(state_ineq_df)
+  return(county_ineq_df)
 }
 # returns heatmap of states based on their pretrial jailing rates
 
-plot_county_ineq <- function(years) {
+plot_county_ineq <- function(states, years) {
 
-  county_ineq_df <- county_ineq_df(years) # calls relevant data frame
+  county_ineq_df <- county_ineq_df(states, years) # calls relevant data frame
   
   blank_theme <- theme_bw() + # creates minimalist map theme
     theme(
@@ -152,7 +155,7 @@ plot_county_ineq <- function(years) {
       panel.border = element_blank()
     )
   
-  ggplot(state_ineq_df) +
+  ggplot(county_ineq_df) +
     geom_polygon(
       mapping = aes(
         x = long,
@@ -164,11 +167,10 @@ plot_county_ineq <- function(years) {
       size = .1
     ) +
     coord_map() +
-    scale_fill_continuous(low = "#132B43", high = "Red") + # aesthetic changes
+    scale_fill_continuous(low = "#132B43", high = "Red") +  # aesthetic changes
     blank_theme
-}
-
-
+    
+  }
 
 #----------------------------------------------------------------------------#
 
