@@ -62,17 +62,36 @@ plot_jail_pop_for_us <- function() {
 #----------------------------------------------------------------------------#
 # Growth of Prison Population by State
 
+# function takes state codes and returns full state name
+get_full_state_name <- function(states) {
+  state_abv <- read.csv(
+    file = "/Users/mollybanks/Documents/info201/assignments/a4-mollybanks/source/state_names_and_codes.csv",
+    stringsAsFactors = FALSE)
+  
+  state_names <- state_abv %>%
+    filter(Code == states, na.rm = TRUE) %>%
+    pull(State)
+  
+  return(state_labels)
+  
+}
+
 # This function returns data frame with relevant values
-get_jail_pop_by_states <- function(states) {
+prison_pop_df_state <- function(states) {
   state_df_render <- incarceration.data %>%
+    filter(state == states, na.rm = TRUE) %>%
     select(state, year, total_jail_pop)
-  return(state_df_render)
+  
+  return(prison_pop_df_state)
 }
 # This function plots jail pop by state
 plot_jail_pop_by_states <- function(states) {
-  state_df_render <- get_jail_pop_by_states() %>% # calls relevant data frame
-    filter(state == states, na.rm = TRUE) # filters data frame for state matches
-  state_jail_pop_plot <- ggplot(data = state_df_render) +
+  
+  state_labels <-  get_full_state_name(states)# prepares label names for states
+  
+  prison_pop_df_state <- prison_pop_df_state(states) # calls relevant data frame
+    
+  state_jail_pop_plot <- ggplot(data =  prison_pop_df_state) +
     geom_smooth(
       mapping = aes(
         x = year,
@@ -85,8 +104,9 @@ plot_jail_pop_by_states <- function(states) {
       title = "Increase of Jail Population by State (1970-2018)",
       x = "Year",
       y = "Total Jail Population",
-      color = "State"
+      caption = "US jail population increase displayed at the state-level"
     ) + # aesthetic changes
+    scale_color_discrete(name = "States", labels = state_labels) +
     scale_color_brewer(palette = "PuOr")
   return(state_jail_pop_plot)
 }
@@ -97,9 +117,10 @@ plot_jail_pop_by_states <- function(states) {
 ## Section 5  ----
 #----------------------------------------------------------------------------#
 # this function returns relevant data frame
-inequality_df <- function(states) {
+inequality_df <- function() {
   inequality_df <- incarceration.data %>%
-    select(urbanicity, year, total_jail_pretrial, total_jail_pretrial_rate)
+    select(urbanicity, year, total_jail_pretrial_rate)
+  
   return(inequality_df)
 }
 
@@ -145,7 +166,7 @@ county_ineq_df <- function(states, years) {
 
   # joins map data with relevant incarceration data frame from above
   county_ineq_df <- map_data("county") %>%
-    filter(region == state_name) %>%
+    filter(region == state_name) %>% # filters map data for state imput
     left_join(jail_county_ineq_df, by = "subregion") # joins by county
     
   return(county_ineq_df)
@@ -157,7 +178,7 @@ plot_county_ineq <- function(states, years) {
   county_ineq_df <- county_ineq_df(states, years) # calls relevant data frame
   
   blank_theme <- theme_bw() + # creates minimalist map theme
-    theme(
+    theme( # creates minimalist theme for map
       axis.line = element_blank(),
       axis.text = element_blank(),
       axis.ticks = element_blank(),
@@ -169,7 +190,7 @@ plot_county_ineq <- function(states, years) {
     )
   
   ggplot(county_ineq_df) +
-    geom_polygon(
+    geom_polygon( # mapping states by coordinates, fill with rate
       mapping = aes(
         x = long,
         y = lat,
