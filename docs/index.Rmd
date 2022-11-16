@@ -5,13 +5,13 @@ date: '2022-11-09'
 output: html_document
 ---
 
-```{r echo=FALSE, eval=TRUE, message=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 source("../source/analysis.R")
 ```
 
 ## Abstract 
 
-Incarceration trends since 1970  reveal stark inequalities in the American justice system. While policy in the justice system has changed throughout the decades, regions, states, and counties have felt starkly different effects. While incarceration remains incredibly high, this report examines historical incarceration trends and potential inequalities that might illuminate future solutions. 
+Incarceration trends since 1970  reveal stark inequalities in the American justice system. While policy related to crime and incarceration has changed throughout the decades, regions, states, and counties have felt starkly different effects. Even now, incarceration remains incredibly high. This report examines historical incarceration trends and potential inequalities that could help illuminate future solutions. 
 
 ## Introduction 
 
@@ -23,7 +23,7 @@ In `r year_max_ice_jail`, `r county_max_ice_jail`, TX had the highest number of 
 
 ## Section 3: Growth of the U.S. Prison Population
 
-```{r prison, echo=FALSE, message=FALSE, warning=FALSE}
+```{r prison, echo=FALSE, fig.height=4, fig.width=10, message=FALSE, warning=FALSE}
 plot_jail_pop_for_us()
 ```
 
@@ -31,14 +31,14 @@ How has America’s prison population grown in the aftermath of the “tough on 
 
 
 ## Section 4: Growth of Prison Population by State
-```{r state, echo=FALSE, message=FALSE, warning=FALSE}
+```{r state, echo=FALSE, fig.height=5, fig.width=10, message=FALSE, warning=FALSE}
 plot_jail_pop_by_states(c("WA", "NE", "AL", "NJ"))
 ```
 
 The selected four states represent the four US regions specified by the Vera Project. Each state had distinct trends in prison population growth.  This suggests that the “tough on crime” era functioned differently at the state level. New Jersey’s new incarcerations skyrocketed at the height of this era but, along with Alabama, declined in the aftermath. Nebraska and Washington, on the other hand, are still steadily increasing in total prison populations. 
 
 ## Section 5: Pretrial Jailing Rate Inequality by Urbanicity
-```{r pretrial, echo=FALSE, message=FALSE, warning=FALSE}
+```{r pretrial, echo=FALSE, fig.height=5, fig.width=10, message=FALSE, warning=FALSE}
 inequality_plot()
 ```
 
