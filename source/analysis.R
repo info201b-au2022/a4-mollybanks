@@ -102,7 +102,8 @@ plot_jail_pop_by_states <- function(states) {
     labs(
       title = "Jail Population by State (1970-2018)",
       x = "Year",
-      y = "Total Jail Population"
+      y = "Total Jail Population",
+      caption = "Chart represents trends in jailing by state from 1970 to 2018"
     ) + # aesthetic changes
     scale_color_discrete(name = "States", labels = state_labels)
   return(state_jail_pop_plot)
@@ -129,10 +130,10 @@ inequality_plot <- function() {
       title = "Pretrial Jailing Rates by Urbanicity (1970-2018)",
       x = "Year",
       y = "Jail Pretrial Rate",
-      color = "Urbanicity", 
+      color = "Urbanicity",
       caption = "Counties marked 'urban' are core metropolitian areas with a
-      population greater than one million. Suburban counties surround urban areas. 
-      Small and midsized counties have populations under one million. 
+      population greater than one million. Suburban counties surround urban areas.
+      Small and midsized counties have populations under one million.
       Rural counties have populations under 50,000."
     ) + # aesthetic changes
     scale_color_brewer(palette = "BrBG")
@@ -214,4 +215,3 @@ plot_county_ineq <- function(states, years) {
 }
 
 #----------------------------------------------------------------------------#
-

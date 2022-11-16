@@ -24,7 +24,7 @@ However, the impacts of mass incarceration extend far beyond America’s prison 
 In  `r year_max_pretrial_rate`, `r county_max_pretrial_rate`'s pretrial jailing rate was the highest in America between 1970 and 2018 within all of America. 
 In `r year_max_ice_jail`, `r county_max_ice_jail`, TX had the highest number of jail admits from ICE. Examining jail bookings by location reveals particular locations of interest in evaluating American incarceration trends. 
 
-## Section 3: Growth of the U.S. Prison Population
+## Section 3: Growth of the U.S. Jail Population
 
 ```{r prison, echo=FALSE, fig.height=4, fig.width=10, message=FALSE, warning=FALSE}
 plot_jail_pop_for_us()
