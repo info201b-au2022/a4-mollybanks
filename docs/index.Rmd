@@ -10,8 +10,7 @@ source("../source/analysis.R")
 ```
 
 ## Abstract 
-[TODO: Include a short abstract (about 50 words)]
-
+Incarceration trends since 1970  reveal stark inequalities in the American justice system. While policy in the justice system has changed throughout the decades, regions, states, and counties have felt starkly different effects. While incarceration remains incredibly high, this report examines historical incarceration trends and potential inequality that might illuminate future solutions. 
 
 ## Introduction 
 
@@ -41,7 +40,7 @@ The selected four states represent the four US regions specified by the Vera Pro
 inequality_plot()
 ```
 
-summary Paragraph 
+How did rural and urban counties differ in pretrial jailing rates after the turn of the century? While urban pretrial jailing has decreased since the 2000s, pretrial jailing in rural counties has continued to increase. The policy changes over the last two decades have had distinct impacts depending on urbanicity. 
 
 ## Section 6: Pretrial Jail Bookings by State
 ```{r map, echo=FALSE, message=FALSE, warning=FALSE}

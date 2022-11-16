@@ -82,7 +82,7 @@ df_state_jail_pop <- function(states) {
     filter(state %in% states, na.rm = TRUE) %>%
     select(state, year, total_jail_pop)
 
-  return(state_prison_pop_df)
+  return(state_jail_pop_df)
 }
 # This function plots jail pop by state
 plot_jail_pop_by_states <- function(states) {
@@ -214,3 +214,4 @@ plot_county_ineq <- function(states, years) {
 }
 
 #----------------------------------------------------------------------------#
+
