@@ -1,5 +1,5 @@
 ---
-title: "Your A4 Report Title (TODO: Revise title)"
+title: "Injustice in the Justice System: Noteworthy US Incarceration Trends 1970-2018"
 author: "Molly Banks"
 date: '2022-11-09'
 output: html_document

@@ -69,29 +69,29 @@ get_full_state_name <- function(states) {
     stringsAsFactors = FALSE)
   
   state_names <- state_abv %>%
-    filter(Code == states, na.rm = TRUE) %>%
+    filter(Code %in% states, na.rm = TRUE) %>%
     pull(State)
   
-  return(state_labels)
+  return(state_names)
   
 }
 
 # This function returns data frame with relevant values
-prison_pop_df_state <- function(states) {
-  state_df_render <- incarceration.data %>%
-    filter(state == states, na.rm = TRUE) %>%
+df_state_prison_pop <- function(states) {
+  state_prison_pop_df <- incarceration.data %>%
+    filter(state %in% states, na.rm = TRUE) %>%
     select(state, year, total_jail_pop)
   
-  return(prison_pop_df_state)
+  return(state_prison_pop_df)
 }
 # This function plots jail pop by state
 plot_jail_pop_by_states <- function(states) {
   
   state_labels <-  get_full_state_name(states)# prepares label names for states
   
-  prison_pop_df_state <- prison_pop_df_state(states) # calls relevant data frame
+  state_prison_pop_df <- df_state_prison_pop(states) # calls relevant data frame
     
-  state_jail_pop_plot <- ggplot(data =  prison_pop_df_state) +
+  state_jail_pop_plot <- ggplot(data = state_prison_pop_df) +
     geom_smooth(
       mapping = aes(
         x = year,
@@ -106,11 +106,9 @@ plot_jail_pop_by_states <- function(states) {
       y = "Total Jail Population",
       caption = "US jail population increase displayed at the state-level"
     ) + # aesthetic changes
-    scale_color_discrete(name = "States", labels = state_labels) +
-    scale_color_brewer(palette = "PuOr")
+    scale_color_discrete(name = "States", labels = state_labels)
   return(state_jail_pop_plot)
 }
-
 
 #----------------------------------------------------------------------------#
 
@@ -176,6 +174,7 @@ county_ineq_df <- function(states, years) {
 plot_county_ineq <- function(states, years) {
 
   county_ineq_df <- county_ineq_df(states, years) # calls relevant data frame
+  title_state <- get_full_state_name(states)
   
   blank_theme <- theme_bw() + # creates minimalist map theme
     theme( # creates minimalist theme for map
@@ -202,7 +201,7 @@ plot_county_ineq <- function(states, years) {
     ) +
     coord_map() +
     scale_fill_continuous(low = "#132B43", high = "Red") +  # aesthetic changes
-    labs(title = paste0("Legally Innocent Jailing Rate by County ", "(", states, ")"),
+    labs(title = paste0("Legally Innocent Jailing Rate in", title_state ),
          subtitle = paste0("Rate of Pretrial Jailing", " in ", years), 
          fill = "Jail Pretrial Rate") +
     blank_theme
