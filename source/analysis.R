@@ -50,7 +50,10 @@ plot_jail_pop_for_us <- function() {
   total_pop_df <- get_year_jail_pop() # calls relevant data frame
   jail_pop_plot <- ggplot(data = total_pop_df) +
     geom_col(mapping = aes(x = year, y = total_jail_pop)) +
-    labs(title = "Increase of Jail Population in U.S. (1970-2018)") +
+    labs(
+      title = "Increase of Jail Population in U.S. (1970-2018)",
+      caption = "Visual representation of mass incarceration over time."
+    ) +
     xlab(label = "Year") + # aesthetic changes
     scale_y_continuous(
       name = "Total Jail Population", # changes labels for readbility
@@ -107,7 +110,7 @@ plot_jail_pop_by_states <- function(states) {
       title = "Jail Population by State (1970-2018)",
       x = "Year",
       y = "Total Jail Population",
-      caption = "Chart represents trends in jailing by state from 1970 to 2018"
+      caption = "Chart represents trends in jailing by state from 1970 to 2018."
     ) +
     scale_color_discrete(name = "States", labels = state_labels) # adds state labels
   return(state_jail_pop_plot)
@@ -224,7 +227,9 @@ plot_county_ineq <- function(states, years) {
         "(by County)"
       ),
       subtitle = paste("Rate of Pretrial Jail Bookings in", years),
-      fill = "Pretrial Jaling Rate"
+      fill = "Pretrial Jaling Rate",
+      caption = paste(title_state, "incarceration during", 
+                      years, "displayed by county.")
     ) +
     blank_theme # renders blank theme
 }
