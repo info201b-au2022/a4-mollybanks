@@ -14,7 +14,8 @@ source("../source/analysis.R")
 
 
 ## Introduction 
-[TODO]
+
+ 
 
 ## Data Summary 
 [TODO]
@@ -25,7 +26,7 @@ source("../source/analysis.R")
 plot_jail_pop_for_us()
 ```
 
-Summary Paragraph 
+How has America’s prison population grown in the aftermath of the “tough on crime” era? This graph depicts a significant increase in the prison population since the mid-1970s. There is a clear increase that begins that the start of the “tough on crime” era. From 1990 to 2010, incarceration rates skyrocketed. 
 
 
 ## Section 4: Growth of Prison Population by State
@@ -33,8 +34,7 @@ Summary Paragraph
 plot_jail_pop_by_states(c("WA", "NE", "AL", "NJ"))
 ```
 
-summary Paragraph 
-- selected one state from each region specified in the Vera institute data set
+The selected four states represent the four US regions specified by the Vera Project. Each state had distinct trends in prison population growth.  This suggests that the “tough on crime” era functioned differently at the state level. New Jersey’s new incarcerations skyrocketed at the height of this era but, along with Alabama, declined in the aftermath. Nebraska and Washington, on the other hand, are still steadily increasing in total prison populations. 
 
 ## Section 5: Pretrial Jailing Rate Inequality by Urbanicity
 ```{r pretrial, echo=FALSE, message=FALSE, warning=FALSE}
@@ -43,11 +43,11 @@ inequality_plot()
 
 summary Paragraph 
 
-## Section 6: Pretrial Jailing Rate Inequality by State
+## Section 6: Pretrial Jail Bookings by State
 ```{r map, echo=FALSE, message=FALSE, warning=FALSE}
-plot_county_ineq("WA", "2010")
+plot_county_ineq("WA", "2007")
 ```
 
-summary Paragraph 
+A speedy trial requires resources. In Washington state, rural states have particularly high pretrial jailing rates. This map suggests that rural counties lack the infrastructure necessary to support an effective justice system. In 2007, the aftermath of the “tough on crime” was still roaring on. This map illuminates how the aftermath played out at the county level.
 
 
