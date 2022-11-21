@@ -18,7 +18,7 @@ county_max_pretrial_rate <- incarceration.data %>%
   pull(county_name)
 
 # finds year that highest jailing rate occoured at the county level
-year_max_pretrial_rate <- incaraeration.data %>%
+year_max_pretrial_rate <- incarceration.data %>%
   filter(total_jail_pretrial_rate == max(total_jail_pretrial_rate, na.rm = TRUE)) %>%
   pull(year)
 
