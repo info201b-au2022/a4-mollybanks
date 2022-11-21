@@ -130,8 +130,8 @@ inequality_df <- function() {
 
 # renders line graph of pretrial jailing by state
 inequality_plot <- function() {
-  inequality_df <- inequality_df() # calls relevant data frame
-  ineq_plot <- ggplot(data = inequality_df) +
+  df_inequality <- inequality_df() # calls relevant data frame
+  ineq_plot <- ggplot(data = df_inequality) +
     geom_smooth(
       mapping = aes(
         x = year,
